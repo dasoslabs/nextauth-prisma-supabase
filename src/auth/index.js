@@ -22,12 +22,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   basePath: "/auth",
   session: { strategy: "jwt" },
   callbacks: {
-    signIn: async ({ account, profile }) => {
-      return true;
-    },
-    authorized({ request, auth }) {
+    async authorized({ request, auth }) {
       const { pathname } = request.nextUrl;
-      if (pathname === "/list") return !!auth;
+      if (pathname === "/protected") return !!auth;
       return true;
     },
     jwt({ token, trigger, session, account }) {
