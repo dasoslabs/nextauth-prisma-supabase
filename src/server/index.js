@@ -11,5 +11,5 @@ export const signInWithProvider = async (formData) => {
 };
 
 export const signOutWithForm = async () => {
-  await signOut();
+  await signOut({ redirectTo: "/" });
 };
