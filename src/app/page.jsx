@@ -1,20 +1,16 @@
 import { oauthProvider } from "@/constants";
+import { signInWithProvider } from "@/server";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { SiNaver } from "react-icons/si";
 
 export default function Home() {
-  const actionLogin = async (formData) => {
-    "use server";
-    // await loginInWithOauth(formData.get('provider'))
-  };
-
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center space-y-5 bg-white px-content">
         <form
-          action={actionLogin}
+          action={signInWithProvider}
           className="m-auto flex w-full max-w-md flex-col gap-3 text-sm font-semibold"
         >
           <button
