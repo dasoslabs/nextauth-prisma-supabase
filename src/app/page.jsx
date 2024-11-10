@@ -8,7 +8,7 @@ import { SiNaver } from "react-icons/si";
 export default function Home() {
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-center space-y-5 bg-white px-content">
+      <div className="flex min-h-screen flex-col items-center justify-center space-y-5 bg-white px-content">
         <form
           action={signInWithProvider}
           className="m-auto flex w-full max-w-md flex-col gap-3 text-sm font-semibold"
@@ -55,13 +55,13 @@ export default function Home() {
           <Link href="#" className="text-stone-700">
             이용 약관
           </Link>
-          에 동의하고{" "}
+          에 동의하고
           <Link href="#" className="text-stone-700">
             개인정보처리방침
           </Link>
           을 읽었음을 인정하는 것으로 간주됩니다.
         </p>
-      </main>
+      </div>
     </>
   );
 }

@@ -6,20 +6,32 @@ import Kakao from "next-auth/providers/kakao";
 import Naver from "next-auth/providers/naver";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google, Naver, Kakao],
+  providers: [
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+        },
+      },
+    }),
+    Naver,
+    Kakao,
+  ],
   basePath: "/auth",
   session: { strategy: "jwt" },
   callbacks: {
+    signIn: async ({ account, profile }) => {
+      return true;
+    },
     authorized({ request, auth }) {
       const { pathname } = request.nextUrl;
-      if (pathname === "/middleware-example") return !!auth;
+      if (pathname === "/list") return !!auth;
       return true;
     },
     jwt({ token, trigger, session, account }) {
       if (trigger === "update") token.name = session.user.name;
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token };
-      }
       return token;
     },
     async session({ session, token }) {

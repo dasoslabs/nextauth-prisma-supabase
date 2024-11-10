@@ -1,9 +1,10 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { oauthProvider } from "@/constants";
 
-export const signInWithProvider = async (provider = oauthProvider.google) => {
+export const signInWithProvider = async (formData) => {
+  const provider = formData.get("provider") ?? oauthProvider.google;
   await signIn(provider);
 };
 
