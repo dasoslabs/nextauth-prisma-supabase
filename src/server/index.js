@@ -2,6 +2,7 @@
 
 import { signIn, signOut } from "@/auth";
 import { oauthProvider } from "@/constants";
+import { prisma } from "@/prisma";
 
 export const signInWithProvider = async (formData) => {
   const provider = formData.get("provider") ?? oauthProvider.google;
@@ -12,3 +13,5 @@ export const signInWithProvider = async (formData) => {
 export const signOutWithForm = async () => {
   await signOut({ redirectTo: "/" });
 };
+
+export const executePrisma = async () => await prisma.user.findMany();
