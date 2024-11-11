@@ -71,6 +71,7 @@ export const {
   pages: {
     signIn: "/",
   },
+  secret: !!process.env.AUTH_SECRET,
 });
 ```
 
@@ -96,11 +97,6 @@ export default auth(async function middleware(request) {
 
   // 인증이 필요한 페이지 접근 제어
   if (isMatch(request.nextUrl.pathname, matchersForAuth)) {
-    // 신규 가입자는 온보딩 페이지로 이동
-    if (session?.user?.isNew) {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
-    }
-
     return session
       ? NextResponse.next()
       : NextResponse.redirect(new URL("/", request.url));
@@ -134,7 +130,6 @@ import { oauthProvider } from "@/constants";
 export const signInWithProvider = async (formData) => {
   const provider = formData.get("provider") ?? oauthProvider.google;
 
-  // redirect 콜백을 실행시키려면 redirectTo 옵션 제거
   await signIn(provider, { redirectTo: "/protected" });
 };
 
