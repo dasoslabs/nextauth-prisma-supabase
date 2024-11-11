@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { match } from "path-to-regexp";
 
-const matchersForAuth = ["/protected", "/onboarding"];
+const matchersForAuth = ["/protected"];
 const matchersForSignIn = ["/"];
 
 export default auth(async function middleware(request) {
@@ -10,7 +10,12 @@ export default auth(async function middleware(request) {
 
   // 인증이 필요한 페이지 접근 제어
   if (isMatch(request.nextUrl.pathname, matchersForAuth)) {
-    return session // 세션 정보 확인
+    // 신규 가입자는 온보딩 페이지로 이동
+    if (session?.user?.isNew) {
+      return NextResponse.redirect(new URL("/onboarding", request.url));
+    }
+
+    return session
       ? NextResponse.next()
       : NextResponse.redirect(new URL("/", request.url));
   }
