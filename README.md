@@ -1,3 +1,7 @@
+Next auth로 OAuth를 처리하고, prisma orm을 supabase에 얹어서 사용하는 예시입니다.
+
+supabase에서 네이버 로그인을 지원하지 않아 supabase auth 사용을 포기하고 next-auth를 선택했습니다.
+
 # next-auth v5
 
 ## 설치
@@ -311,4 +315,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
 	...기존 옵션
 })
+```
+
+# 환경 변수
+
+```
+AUTH_SECRET=
+
+AUTH_NAVER_ID=
+AUTH_NAVER_SECRET=
+
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET=
+
+AUTH_KAKAO_ID=
+AUTH_KAKAO_SECRET=
+
+SUPABASE_DOMAIN=
+SUPABASE_SERVICE_ROLE_KEY=
+
+DATABASE_URL=
+DIRECT_URL=
+
+NEXTAUTH_URL=
+NEXT_PUBLIC_API_URL=
 ```
