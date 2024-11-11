@@ -1,3 +1,5 @@
+import { prisma } from "@/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import "next-auth/jwt";
 
@@ -12,6 +14,7 @@ export const {
   auth,
   unstable_update: update, // beta
 } = NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -28,13 +31,6 @@ export const {
   basePath: "/auth",
   session: { strategy: "jwt" },
   callbacks: {
-    async signIn({ account, user }) {
-      // 신규 가입자 체크
-      if (account && user) {
-        user.isNew = true;
-      }
-      return true;
-    },
     async jwt({ token, account, user, profile, session, trigger }) {
       if (user) {
         Object.assign(token, user);
@@ -42,17 +38,22 @@ export const {
 
       if (trigger === "update" && session) {
         Object.assign(token, session.user);
-        token.isNew = session.user?.isNew;
       }
       return token;
     },
     async session({ session, token, newSession, user, trigger }) {
       if (token?.accessToken) session.accessToken = token.accessToken;
-      session.user.isNew = token.isNew;
       return session;
     },
   },
   pages: {
     signIn: "/",
+    error: "/",
   },
+  events: {
+    async signIn({ isNewUser }) {
+      return true;
+    },
+  },
+  secret: !!process.env.AUTH_SECRET,
 });

@@ -5,10 +5,23 @@ import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { SiNaver } from "react-icons/si";
 
-export default function Home() {
+export default async function Home({ searchParams }) {
+  const { error } = await searchParams;
+
+  const generateErrorMessage = () => {
+    switch (error) {
+      case "OAuthAccountNotLinked":
+        return <p className="text-red-500">이미 가입한 계정이 있어요.</p>;
+
+      default:
+        return <p></p>;
+    }
+  };
+
   return (
     <>
       <div className="flex min-h-screen flex-col items-center justify-center space-y-5 bg-white px-content">
+        {generateErrorMessage()}
         <form
           action={signInWithProvider}
           className="m-auto flex w-full max-w-md flex-col gap-3 text-sm font-semibold"
@@ -51,11 +64,11 @@ export default function Home() {
           </button>
         </form>
         <p className="text-center text-xs text-stone-400">
-          계속 진행하면
+          계속 진행하면{" "}
           <Link href="#" className="text-stone-700">
             이용 약관
           </Link>
-          에 동의하고
+          에 동의하고{" "}
           <Link href="#" className="text-stone-700">
             개인정보처리방침
           </Link>
