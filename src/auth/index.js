@@ -22,16 +22,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   basePath: "/auth",
   session: { strategy: "jwt" },
   callbacks: {
-    async authorized({ request, auth }) {
-      const { pathname } = request.nextUrl;
-      if (pathname === "/protected") return !!auth;
-      return true;
-    },
-    jwt({ token, trigger, session, account }) {
+    async jwt({ token, account, user, profile, session, trigger }) {
       if (trigger === "update") token.name = session.user.name;
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token, newSession, user, trigger }) {
       if (token?.accessToken) session.accessToken = token.accessToken;
 
       return session;
