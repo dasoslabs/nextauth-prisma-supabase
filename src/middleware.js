@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { match } from "path-to-regexp";
 
-const matchersForAuth = ["/protected"];
+const matchersForAuth = ["/protected", "/onboarding"];
 const matchersForSignIn = ["/"];
 
 export default auth(async function middleware(request) {
