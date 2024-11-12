@@ -34,6 +34,7 @@ export const {
     async jwt({ token, account, user, profile, session, trigger }) {
       if (user) {
         Object.assign(token, user);
+        token.id = user.id;
       }
 
       if (trigger === "update" && session) {
@@ -43,6 +44,10 @@ export const {
     },
     async session({ session, token, newSession, user, trigger }) {
       if (token?.accessToken) session.accessToken = token.accessToken;
+      if (token?.id) {
+        session.user.id = token.id;
+      }
+
       return session;
     },
   },
